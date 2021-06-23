@@ -1,0 +1,91 @@
+{
+	"name": "camelgobrr",
+	"displayName": "Camel Go Brr",
+	"description": "change case with hotkey",
+	"publisher": "aethli",
+	"version": "0.1.0",
+	"engines": {
+		"vscode": "^1.57.0"
+	},
+	"keywords": [
+		"camel"
+	],
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:casegobrr.caseChange"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "casegobrr.caseChange",
+				"title": "Change Case",
+				"category": "camelgobrr"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "casegobrr.caseChange",
+				"key": "ctrl+alt+g",
+				"mac": "cmd+alt+g",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": {
+			"title": "camelgobrr",
+			"properties": {
+				"camelgobrr.cases": {
+					"type": "array",
+					"title": "cases",
+					"items": {
+						"type": "string",
+						"title": "case",
+						"enum": [
+							"kebab-case",
+							"CamelCase",
+							"camelCase",
+							"Space Case",
+							"SPACE CASE",
+							"space case",
+							"SNAKE_CASE",
+							"snake_case"
+						]
+					},
+					"default": [
+						"kebab-case",
+						"CamelCase",
+						"camelCase",
+						"Space Case",
+						"SPACE CASE",
+						"space case",
+						"SNAKE_CASE",
+						"snake_case"
+					]
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.57.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^12.11.7",
+		"eslint": "^7.19.0",
+		"@typescript-eslint/eslint-plugin": "^4.14.1",
+		"@typescript-eslint/parser": "^4.14.1",
+		"glob": "^7.1.6",
+		"mocha": "^8.2.1",
+		"typescript": "^4.1.3",
+		"vscode-test": "^1.5.0"
+	}
+}
