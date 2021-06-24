@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.3]
+
+- give a icon
+
 ## [0.1.2]
 
 - fix CHANGELOG.md
