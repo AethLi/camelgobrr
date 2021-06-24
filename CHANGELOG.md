@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.2]
+
+- fix CHANGELOG.md
+
 ## [0.1.1]
 
 - fix camelCase
