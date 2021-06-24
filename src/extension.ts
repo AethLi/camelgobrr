@@ -95,7 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
                 let des = TempStorage.plainArray
                   .map((a) => a.replace(a[0], a[0].toUpperCase()))
                   .join("");
-                des.replace(des[0], des[0].toLowerCase());
+                des = des.replace(des[0], des[0].toLowerCase());
                 edit.replace(selection, des);
               }
             });
