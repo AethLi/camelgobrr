@@ -8,7 +8,8 @@ Just switch easily between kebab-case, CamelCase, camelCase, camelCase, Space Ca
 
 ## Usage
 
-Select some text, then ctrl+alt+g(cmd+alt+g on mac).
+- Select some text, then ctrl+alt+g(cmd+alt+g on mac).
+- Select some text, then ctrl+shift+g(cmd+shift+g on mac) to repeat last casegobrr operation.
 
 ## Requirements
 

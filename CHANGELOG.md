@@ -1,16 +1,21 @@
 # Change Log
 
+## [0.1.4]
+
+- Give a notice when nothing selected.
+- Add a repeat keybindings(ctrl+shift+g).@see README.md
+
 ## [0.1.3]
 
-- give a icon
+- Give a icon
 
 ## [0.1.2]
 
-- fix CHANGELOG.md
+- Fix CHANGELOG.md
 
 ## [0.1.1]
 
-- fix camelCase
+- Gix camelCase
 
 ## [1.0.0]
 

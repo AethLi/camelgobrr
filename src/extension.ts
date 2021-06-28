@@ -13,7 +13,7 @@ type Case =
 class TempStorage {
   public static plainArray: Array<string>;
   public static cases: Array<Case>;
-  public static currentCase: number = 0;
+  public static currentCase: number = -1;
 }
 
 function getConfiguration(): vscode.WorkspaceConfiguration {
@@ -49,6 +49,90 @@ function splitWords(plain: string): Array<string> {
     return new Array(plain.toLocaleLowerCase());
   }
 }
+function executeReplace(
+  editor: vscode.TextEditor,
+  selection: vscode.Selection
+): void {
+  switch (TempStorage.cases[TempStorage.currentCase]) {
+    case "kebab-case":
+      editor.edit((edit: vscode.TextEditorEdit) => {
+        if (editor) {
+          edit.replace(selection, TempStorage.plainArray.join("-"));
+        }
+      });
+      break;
+    case "CamelCase":
+      editor.edit((edit: vscode.TextEditorEdit) => {
+        if (editor) {
+          edit.replace(
+            selection,
+            TempStorage.plainArray
+              .map((a) => a.replace(a[0], a[0].toUpperCase()))
+              .join("")
+          );
+        }
+      });
+      break;
+    case "camelCase":
+      editor.edit((edit: vscode.TextEditorEdit) => {
+        if (editor) {
+          let des = TempStorage.plainArray
+            .map((a) => a.replace(a[0], a[0].toUpperCase()))
+            .join("");
+          des = des.replace(des[0], des[0].toLowerCase());
+          edit.replace(selection, des);
+        }
+      });
+      break;
+    case "Space Case":
+      editor.edit((edit: vscode.TextEditorEdit) => {
+        if (editor) {
+          edit.replace(
+            selection,
+            TempStorage.plainArray
+              .map((a) => a.replace(a[0], a[0].toUpperCase()))
+              .join(" ")
+          );
+        }
+      });
+      break;
+    case "SPACE CASE":
+      editor.edit((edit: vscode.TextEditorEdit) => {
+        if (editor) {
+          edit.replace(
+            selection,
+            TempStorage.plainArray.map((a) => a.toUpperCase()).join(" ")
+          );
+        }
+      });
+      break;
+    case "space case":
+      editor.edit((edit: vscode.TextEditorEdit) => {
+        if (editor) {
+          edit.replace(selection, TempStorage.plainArray.join(" "));
+        }
+      });
+      break;
+    case "SNAKE_CASE":
+      editor.edit((edit: vscode.TextEditorEdit) => {
+        if (editor) {
+          edit.replace(
+            selection,
+            TempStorage.plainArray.map((a) => a.toUpperCase()).join("_")
+          );
+        }
+      });
+      break;
+    case "snake_case":
+      editor.edit((edit: vscode.TextEditorEdit) => {
+        if (editor) {
+          edit.replace(selection, TempStorage.plainArray.join("_"));
+        }
+      });
+      break;
+    default:
+  }
+}
 
 export function activate(context: vscode.ExtensionContext) {
   TempStorage.cases = getCases();
@@ -58,6 +142,10 @@ export function activate(context: vscode.ExtensionContext) {
       if (editor) {
         let document = editor.document;
         let selection = editor.selection;
+        if (selection.isEmpty) {
+          vscode.window.showInformationMessage("Nothing selected");
+          return;
+        }
 
         // Get the word within the selection
         let words = document.getText(selection);
@@ -66,89 +154,33 @@ export function activate(context: vscode.ExtensionContext) {
         if (!TempStorage.cases) {
           return;
         }
+        TempStorage.currentCase++;
         if (TempStorage.cases.length <= TempStorage.currentCase) {
           TempStorage.currentCase = 0;
         }
-        switch (TempStorage.cases[TempStorage.currentCase]) {
-          case "kebab-case":
-            editor.edit((edit: vscode.TextEditorEdit) => {
-              if (editor) {
-                edit.replace(selection, TempStorage.plainArray.join("-"));
-              }
-            });
-            break;
-          case "CamelCase":
-            editor.edit((edit: vscode.TextEditorEdit) => {
-              if (editor) {
-                edit.replace(
-                  selection,
-                  TempStorage.plainArray
-                    .map((a) => a.replace(a[0], a[0].toUpperCase()))
-                    .join("")
-                );
-              }
-            });
-            break;
-          case "camelCase":
-            editor.edit((edit: vscode.TextEditorEdit) => {
-              if (editor) {
-                let des = TempStorage.plainArray
-                  .map((a) => a.replace(a[0], a[0].toUpperCase()))
-                  .join("");
-                des = des.replace(des[0], des[0].toLowerCase());
-                edit.replace(selection, des);
-              }
-            });
-            break;
-          case "Space Case":
-            editor.edit((edit: vscode.TextEditorEdit) => {
-              if (editor) {
-                edit.replace(
-                  selection,
-                  TempStorage.plainArray
-                    .map((a) => a.replace(a[0], a[0].toUpperCase()))
-                    .join(" ")
-                );
-              }
-            });
-            break;
-          case "SPACE CASE":
-            editor.edit((edit: vscode.TextEditorEdit) => {
-              if (editor) {
-                edit.replace(
-                  selection,
-                  TempStorage.plainArray.map((a) => a.toUpperCase()).join(" ")
-                );
-              }
-            });
-            break;
-          case "space case":
-            editor.edit((edit: vscode.TextEditorEdit) => {
-              if (editor) {
-                edit.replace(selection, TempStorage.plainArray.join(" "));
-              }
-            });
-            break;
-          case "SNAKE_CASE":
-            editor.edit((edit: vscode.TextEditorEdit) => {
-              if (editor) {
-                edit.replace(
-                  selection,
-                  TempStorage.plainArray.map((a) => a.toUpperCase()).join("_")
-                );
-              }
-            });
-            break;
-          case "snake_case":
-            editor.edit((edit: vscode.TextEditorEdit) => {
-              if (editor) {
-                edit.replace(selection, TempStorage.plainArray.join("_"));
-              }
-            });
-            break;
-          default:
+        executeReplace(editor, selection);
+      }
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("casegobrr.repeatCaseChange", () => {
+      let editor = vscode.window.activeTextEditor;
+      if (editor) {
+        let document = editor.document;
+        let selection = editor.selection;
+        if (selection.isEmpty) {
+          vscode.window.showInformationMessage("Nothing selected");
+          return;
         }
-        TempStorage.currentCase++;
+
+        // Get the word within the selection
+        let words = document.getText(selection);
+        splitWords(words);
+        // exit while no cases in settings
+        if (!TempStorage.cases) {
+          return;
+        }
+        executeReplace(editor, selection);
       }
     })
   );
@@ -156,7 +188,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.workspace.onDidChangeConfiguration((e) => {
       if (e.affectsConfiguration("camelgobrr.cases")) {
         TempStorage.cases = getCases();
-        TempStorage.currentCase = 0;
+        TempStorage.currentCase = -1;
       }
     })
   );

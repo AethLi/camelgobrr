@@ -3,7 +3,7 @@
 	"displayName": "Camel Go Brr",
 	"description": "change case with hotkey",
 	"publisher": "aethli",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"engines": {
 		"vscode": "^1.57.0"
 	},
@@ -35,6 +35,11 @@
 				"command": "casegobrr.caseChange",
 				"title": "Change Case",
 				"category": "camelgobrr"
+			},
+			{
+				"command": "casegobrr.repeatCaseChange",
+				"title": "Repeat Change Case",
+				"category": "camelgobrr"
 			}
 		],
 		"keybindings": [
@@ -42,6 +47,12 @@
 				"command": "casegobrr.caseChange",
 				"key": "ctrl+alt+g",
 				"mac": "cmd+alt+g",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "casegobrr.repeatCaseChange",
+				"key": "ctrl+shift+g",
+				"mac": "cmd+shift+g",
 				"when": "editorTextFocus"
 			}
 		],
